@@ -1,0 +1,22 @@
+# Profil DEV : base H2 en mémoire, schéma recréé au démarrage, logs verbeux, secret de démo.
+spring:
+  datasource:
+    url: jdbc:h2:mem:authdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ''
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+locadrive:
+  jwt:
+    secret: locadrive-dev-secret-change-me-0123456789
+
+logging:
+  level:
+    fr.locadrive: DEBUG

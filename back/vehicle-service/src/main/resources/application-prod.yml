@@ -1,0 +1,18 @@
+# Profil PROD : PostgreSQL fourni par l'environnement (aucune valeur par défaut).
+# Variables requises : DB_URL, DB_USERNAME, DB_PASSWORD.
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      # `update` pour démarrer sans outil de migration ; en déploiement réel,
+      # préférer `validate` avec des migrations Flyway/Liquibase.
+      ddl-auto: update
+    show-sql: false
+
+logging:
+  level:
+    root: INFO
+    fr.locadrive: INFO

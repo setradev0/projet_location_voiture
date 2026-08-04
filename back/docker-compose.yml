@@ -1,0 +1,35 @@
+# Bases de données PostgreSQL des microservices (profil `prod`).
+# Un serveur Postgres hébergeant une base + un utilisateur dédié par service
+# (database-per-service) — voir docker/postgres/init/01-init-databases.sql.
+#
+#   docker compose up -d        # démarre Postgres (crée les bases au 1er lancement)
+#   docker compose ps           # état + healthcheck
+#   docker compose down         # arrête (les données PERSISTENT dans le volume)
+#   docker compose down -v      # arrête ET supprime les données (réinitialisation)
+#
+# Les services Spring s'y connectent en profil prod via ./start-all-prod.sh.
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: locadrive-postgres
+    restart: unless-stopped
+    environment:
+      # Superutilisateur d'administration (usage local uniquement).
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      # Port hôte configurable (POSTGRES_PORT) si 5432 est déjà pris.
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - locadrive-pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  locadrive-pgdata:
+    name: locadrive-pgdata

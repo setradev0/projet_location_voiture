@@ -1,0 +1,16 @@
+# Configuration commune à tous les environnements.
+# Le profil actif est `dev` par défaut ; en production, définir SPRING_PROFILES_ACTIVE=prod.
+server:
+  port: ${SERVER_PORT:8081}
+
+spring:
+  application:
+    name: auth-service
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  jpa:
+    open-in-view: false
+
+locadrive:
+  jwt:
+    validity: PT8H

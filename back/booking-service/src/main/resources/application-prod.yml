@@ -1,0 +1,22 @@
+# Profil PROD : PostgreSQL et URL du vehicle-service fournis par l'environnement.
+# Variables requises : DB_URL, DB_USERNAME, DB_PASSWORD, VEHICLE_SERVICE_URL.
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      # `update` pour démarrer sans outil de migration ; en déploiement réel,
+      # préférer `validate` avec des migrations Flyway/Liquibase.
+      ddl-auto: update
+    show-sql: false
+
+locadrive:
+  vehicle-service:
+    url: ${VEHICLE_SERVICE_URL}
+
+logging:
+  level:
+    root: INFO
+    fr.locadrive: INFO

@@ -1,0 +1,22 @@
+# Profil DEV : base H2 en mémoire, vehicle-service en local, logs verbeux.
+spring:
+  datasource:
+    url: jdbc:h2:mem:bookingdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ''
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+locadrive:
+  vehicle-service:
+    url: http://localhost:8082
+
+logging:
+  level:
+    fr.locadrive: DEBUG

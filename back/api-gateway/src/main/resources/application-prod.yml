@@ -1,0 +1,31 @@
+# Profil PROD : cibles des services et origines CORS fournies par l'environnement.
+# Variables requises : AUTH_SERVICE_URL, VEHICLE_SERVICE_URL, BOOKING_SERVICE_URL, ALLOWED_ORIGINS.
+# ALLOWED_ORIGINS accepte une liste séparée par des virgules (ex. https://app.exemple.fr).
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowed-origins: ${ALLOWED_ORIGINS}
+                allowed-methods: '*'
+                allowed-headers: '*'
+          routes:
+            - id: auth-service
+              uri: ${AUTH_SERVICE_URL}
+              predicates:
+                - Path=/api/auth/**
+            - id: vehicle-service
+              uri: ${VEHICLE_SERVICE_URL}
+              predicates:
+                - Path=/api/vehicles/**
+            - id: booking-service
+              uri: ${BOOKING_SERVICE_URL}
+              predicates:
+                - Path=/api/bookings/**
+
+logging:
+  level:
+    root: INFO

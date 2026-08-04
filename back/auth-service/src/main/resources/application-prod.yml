@@ -1,0 +1,22 @@
+# Profil PROD : PostgreSQL et secrets fournis par l'environnement (aucune valeur par défaut).
+# Variables requises : DB_URL, DB_USERNAME, DB_PASSWORD, LOCADRIVE_JWT_SECRET.
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      # `update` pour démarrer sans outil de migration ; en déploiement réel,
+      # préférer `validate` avec des migrations Flyway/Liquibase.
+      ddl-auto: update
+    show-sql: false
+
+locadrive:
+  jwt:
+    secret: ${LOCADRIVE_JWT_SECRET}
+
+logging:
+  level:
+    root: INFO
+    fr.locadrive: INFO
