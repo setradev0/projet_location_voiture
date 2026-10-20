@@ -78,6 +78,10 @@ export class InMemoryVehicleRepository extends VehicleRepository {
   private readonly vehicles = signal<readonly Vehicle[]>(SEED_VEHICLES);
   private nextId = 1;
 
+  async hydrate(): Promise<void> {
+    return;
+  }
+
   getAll(): readonly Vehicle[] {
     return this.vehicles();
   }
@@ -98,13 +102,13 @@ export class InMemoryVehicleRepository extends VehicleRepository {
     return this.vehicles().filter((v) => v.city.toLowerCase().includes(city));
   }
 
-  add(data: NewVehicle): Vehicle {
+  async add(data: NewVehicle): Promise<Vehicle> {
     const vehicle: Vehicle = { ...data, id: `v-${Date.now().toString(36)}-${this.nextId++}` };
     this.vehicles.update((list) => [vehicle, ...list]);
     return vehicle;
   }
 
-  update(id: string, data: NewVehicle): Vehicle | undefined {
+  async update(id: string, data: NewVehicle): Promise<Vehicle | undefined> {
     if (!this.getById(id)) {
       return undefined;
     }
@@ -113,7 +117,7 @@ export class InMemoryVehicleRepository extends VehicleRepository {
     return vehicle;
   }
 
-  remove(id: string): void {
+  async remove(id: string): Promise<void> {
     this.vehicles.update((list) => list.filter((v) => v.id !== id));
   }
 }

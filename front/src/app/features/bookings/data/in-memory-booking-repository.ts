@@ -26,6 +26,10 @@ export class InMemoryBookingRepository extends BookingRepository {
   private readonly bookings = signal<readonly Booking[]>(SEED_BOOKINGS);
   private nextId = 1;
 
+  async hydrate(): Promise<void> {
+    return;
+  }
+
   getAll(): readonly Booking[] {
     return this.bookings();
   }
@@ -45,7 +49,7 @@ export class InMemoryBookingRepository extends BookingRepository {
     );
   }
 
-  book(request: BookingRequest): BookingResult {
+  async book(request: BookingRequest): Promise<BookingResult> {
     const { option, startDate, endDate, vehicle } = request;
     if (!startDate) {
       return { ok: false, error: 'Choisissez une date de location.' };
@@ -92,7 +96,7 @@ export class InMemoryBookingRepository extends BookingRepository {
     return { ok: true, booking };
   }
 
-  cancel(bookingId: string): void {
+  async cancel(bookingId: string): Promise<void> {
     this.bookings.update((list) =>
       list.map((b) => (b.id === bookingId ? { ...b, status: 'annulée' as const } : b)),
     );

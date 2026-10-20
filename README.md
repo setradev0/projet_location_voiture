@@ -7,7 +7,7 @@ Application web de location de voitures : les clients recherchent et réservent 
 ```
 projet_location_voiture/
 ├── front/   # Application Angular 22 (SSR, Tailwind CSS, Signal Forms)
-└── back/    # Backend Spring Boot 3.5 en microservices (Java 21, Maven multi-modules)
+└── back/    # Backend Spring Boot 3.5 en microservices (Java 25, Maven multi-modules)
     ├── api-gateway/       # 8080 — Spring Cloud Gateway : point d'entrée unique + CORS
     ├── auth-service/      # 8081 — comptes utilisateurs, BCrypt, émission de JWT
     ├── vehicle-service/   # 8082 — CRUD flotte + recherche par ville
@@ -84,7 +84,7 @@ npm install
 npm start          # http://localhost:4200 (configuration development)
 ```
 
-**Backend** (Java 21+ et Maven requis)
+**Backend** (Java 25+ et Maven requis)
 
 ```bash
 cd back

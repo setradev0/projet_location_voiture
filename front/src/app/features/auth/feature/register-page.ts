@@ -139,7 +139,7 @@ export class RegisterPage {
     event.preventDefault();
     this.submitError.set(null);
     await submit(this.registerForm, async () => {
-      const result = this.auth.register(this.model());
+      const result = await this.auth.register(this.model());
       if (!result.ok) {
         this.submitError.set(result.error);
         return undefined;

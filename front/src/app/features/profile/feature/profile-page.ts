@@ -271,13 +271,13 @@ export class ProfilePage {
     this.saved.set(false);
   }
 
-  protected onSubmit(event: Event): void {
+  protected async onSubmit(event: Event): Promise<void> {
     event.preventDefault();
     this.submitted.set(true);
     if (!this.name().trim()) {
       return;
     }
-    this.auth.updateProfile({ name: this.name().trim(), photoUrl: this.photoUrl() });
+    await this.auth.updateProfile({ name: this.name().trim(), photoUrl: this.photoUrl() });
     this.saved.set(true);
   }
 
@@ -294,7 +294,7 @@ export class ProfilePage {
     this.passwordError.set(null);
   }
 
-  protected onSubmitPassword(event: Event): void {
+  protected async onSubmitPassword(event: Event): Promise<void> {
     event.preventDefault();
     this.passwordSubmitted.set(true);
     this.passwordError.set(null);
@@ -305,7 +305,7 @@ export class ProfilePage {
     ) {
       return;
     }
-    const result = this.auth.changePassword(this.currentPassword(), this.newPassword());
+    const result = await this.auth.changePassword(this.currentPassword(), this.newPassword());
     if (!result.ok) {
       this.passwordError.set(result.error);
       return;

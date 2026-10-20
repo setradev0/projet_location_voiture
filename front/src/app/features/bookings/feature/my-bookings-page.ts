@@ -87,6 +87,6 @@ export class MyBookingsPage {
   });
 
   protected cancel(bookingId: string): void {
-    this.repository.cancel(bookingId);
+    void this.repository.cancel(bookingId);
   }
 }

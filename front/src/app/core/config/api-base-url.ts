@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 
 /**
- * URL de base de l'API, injectable dans les futurs adaptateurs HTTP.
+ * URL de base de l'API, injectable dans les adaptateurs HTTP.
  * Sa valeur provient de l'environnement actif (voir `environment.apiBaseUrl`),
  * fournie dans `app.config.ts`.
  */
