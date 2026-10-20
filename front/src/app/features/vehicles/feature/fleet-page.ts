@@ -101,6 +101,6 @@ export class FleetPage {
   protected readonly vehicles = computed(() => this.repository.getAll());
 
   protected remove(id: string): void {
-    this.repository.remove(id);
+    void this.repository.remove(id);
   }
 }

@@ -275,7 +275,7 @@ export class VehicleDetailPage {
     this.endDate.set((event.target as HTMLInputElement).value);
   }
 
-  protected onSubmit(event: Event): void {
+  protected async onSubmit(event: Event): Promise<void> {
     event.preventDefault();
     this.submitted.set(true);
     this.bookingError.set(null);
@@ -288,7 +288,7 @@ export class VehicleDetailPage {
     if (option === 'plusieurs-jours' && !this.endDate()) {
       return;
     }
-    const result = this.bookings.book({
+    const result = await this.bookings.book({
       user,
       vehicle,
       option,
@@ -299,6 +299,6 @@ export class VehicleDetailPage {
       this.bookingError.set(result.error);
       return;
     }
-    void this.router.navigateByUrl('/mes-reservations');
+    await this.router.navigateByUrl('/mes-reservations');
   }
 }

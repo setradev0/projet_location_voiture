@@ -1,28 +1,38 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import {
+  ApplicationConfig,
+  inject,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+} from '@angular/core';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { provideClientHydration } from '@angular/platform-browser';
 
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
 import { API_BASE_URL } from './core/config/api-base-url';
+import { authInterceptor } from './core/http/auth.interceptor';
 import { AuthService } from './features/auth/domain/auth-service';
-import { InMemoryAuthService } from './features/auth/data/in-memory-auth-service';
+import { HttpAuthService } from './features/auth/data/http-auth-service';
 import { BookingRepository } from './features/bookings/domain/booking-repository';
-import { InMemoryBookingRepository } from './features/bookings/data/in-memory-booking-repository';
+import { HttpBookingRepository } from './features/bookings/data/http-booking-repository';
 import { VehicleRepository } from './features/vehicles/domain/vehicle-repository';
-import { InMemoryVehicleRepository } from './features/vehicles/data/in-memory-vehicle-repository';
+import { HttpVehicleRepository } from './features/vehicles/data/http-vehicle-repository';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideClientHydration(),
-    // URL de l'API selon l'environnement actif (dev : gateway local, prod : /api).
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     { provide: API_BASE_URL, useValue: environment.apiBaseUrl },
-    // Inversion de dépendance : les adaptateurs mock sont branchés ici,
-    // à remplacer par des adaptateurs HTTP sans toucher aux features.
-    { provide: VehicleRepository, useClass: InMemoryVehicleRepository },
-    { provide: AuthService, useClass: InMemoryAuthService },
-    { provide: BookingRepository, useClass: InMemoryBookingRepository },
+    { provide: VehicleRepository, useClass: HttpVehicleRepository },
+    { provide: AuthService, useClass: HttpAuthService },
+    { provide: BookingRepository, useClass: HttpBookingRepository },
+    provideAppInitializer(() => {
+      const vehicles = inject(VehicleRepository);
+      const bookings = inject(BookingRepository);
+      return Promise.all([vehicles.hydrate(), bookings.hydrate()]);
+    }),
   ],
 };

@@ -41,7 +41,7 @@ export class InMemoryAuthService extends AuthService {
 
   readonly currentUser = this.user.asReadonly();
 
-  login(credentials: Credentials): AuthResult {
+  async login(credentials: Credentials): Promise<AuthResult> {
     const email = credentials.email.trim().toLowerCase();
     const account = this.accounts.find(
       (a) => a.email.toLowerCase() === email && a.password === credentials.password,
@@ -54,7 +54,7 @@ export class InMemoryAuthService extends AuthService {
     return { ok: true, user };
   }
 
-  register(data: RegisterData): AuthResult {
+  async register(data: RegisterData): Promise<AuthResult> {
     const email = data.email.trim().toLowerCase();
     if (this.accounts.some((a) => a.email.toLowerCase() === email)) {
       return { ok: false, error: 'Un compte existe déjà avec cet email.' };
@@ -76,7 +76,7 @@ export class InMemoryAuthService extends AuthService {
     this.user.set(null);
   }
 
-  updateProfile(update: ProfileUpdate): User {
+  async updateProfile(update: ProfileUpdate): Promise<User> {
     const current = this.user();
     if (!current) {
       throw new Error('Aucun utilisateur connecté.');
@@ -91,7 +91,7 @@ export class InMemoryAuthService extends AuthService {
     return updated;
   }
 
-  changePassword(currentPassword: string, newPassword: string): OperationResult {
+  async changePassword(currentPassword: string, newPassword: string): Promise<OperationResult> {
     const current = this.user();
     if (!current) {
       return { ok: false, error: 'Aucun utilisateur connecté.' };

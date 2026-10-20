@@ -106,7 +106,7 @@ export class LoginPage {
     event.preventDefault();
     this.submitError.set(null);
     await submit(this.loginForm, async () => {
-      const result = this.auth.login(this.model());
+      const result = await this.auth.login(this.model());
       if (!result.ok) {
         this.submitError.set(result.error);
         return undefined;

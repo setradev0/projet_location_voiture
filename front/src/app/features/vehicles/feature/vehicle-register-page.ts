@@ -305,11 +305,11 @@ export class VehicleRegisterPage {
     event.preventDefault();
     await submit(this.vehicleForm, async () => {
       if (this.editedId) {
-        this.repository.update(this.editedId, { ...this.model() });
+        await this.repository.update(this.editedId, { ...this.model() });
         await this.router.navigateByUrl('/agent/flotte');
         return undefined;
       }
-      const added = this.repository.add({ ...this.model() });
+      const added = await this.repository.add({ ...this.model() });
       this.lastAdded.set(added);
       this.model.set({ ...this.emptyVehicle });
       this.photoError.set(null);

@@ -95,6 +95,6 @@ export class AgentBookingsPage {
   protected readonly bookings = computed(() => this.repository.getAll());
 
   protected cancel(bookingId: string): void {
-    this.repository.cancel(bookingId);
+    void this.repository.cancel(bookingId);
   }
 }
